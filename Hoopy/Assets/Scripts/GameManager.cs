@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Analytics;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,7 +20,8 @@ public class GameManager : MonoBehaviour
     public bool isLevelCompleted = false;
     public int score = 0;
     public int finalScore = 25;
-
+    
+    
 
     private void Awake()
     {
@@ -69,6 +71,15 @@ public class GameManager : MonoBehaviour
         {
             uiManager.LevelCompletedScene();
             isLevelCompleted = true;
+            AnalyticsResult analyticsResult = UnityEngine.Analytics.Analytics.
+                CustomEvent
+                ("Levelwin", new Dictionary<string, object>
+                {
+                    {"Level",SceneManager.GetActiveScene().buildIndex}, 
+                    {"Position", playerController.GetPlayerPosition()},
+                    {"LevelPlayTime", Time.timeSinceLevelLoad}
+                });
+            Debug.Log(analyticsResult);
         }
     }
   
@@ -104,5 +115,15 @@ public class GameManager : MonoBehaviour
     public void CrashedObstacle(GameObject obstacle)
     {
         GameOver();
+        AnalyticsResult analyticsResult = UnityEngine.Analytics.Analytics.
+            CustomEvent
+            ("Levelfailed", new Dictionary<string, object>
+                {
+                    {"Level",SceneManager.GetActiveScene().buildIndex}, 
+                    {"Position", playerController.GetPlayerPosition()},
+                    {"LevelPlayTime", Time.timeSinceLevelLoad}
+                });
+        Debug.Log(analyticsResult);
+        
     }
 }

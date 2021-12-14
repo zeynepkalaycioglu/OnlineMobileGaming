@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.UIElements;
 using UnityEditorInternal;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -108,5 +109,11 @@ public class PlayerController : MonoBehaviour
             GameManager.Instance.GameCompleted(collision2D.gameObject);
             SoundManager.Instance.PlaySound(SoundManager.SoundTypes.Congratz);
         }
+    }
+
+
+    public Vector3 GetPlayerPosition()
+    {
+        return gameObject.transform.position;
     }
 }
